@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rating-service
+  name: rating-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rating-service
+  template:
+    metadata:
+      labels:
+        app: rating-service
+    spec:
+      containers:
+        - name: rating-service
+          image: docker.io/nagendrakankatala/rating-service:0.0.1-SNAPSHOT
+          volumeMounts:
+            - mountPath: /app/config
+              name: rating-service-config
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: /app/config/
+      volumes:
+        - name: rating-service-config
+          configMap:
+            name: rating-service-config
